@@ -13,8 +13,9 @@ class User extends ActiveRecord implements IdentityInterface {
     const STATUS_DELETED = 0;
     const STATUS_NOT_ACTIVE = 1;
     const STATUS_ACTIVE = 10;
-    const IS_ADMIN = 2;
-    const IS_USER = 3;
+    const ROLE_ADMIN = 2;
+    const ROLE_USER = 3;
+    
 
     public $password;
 

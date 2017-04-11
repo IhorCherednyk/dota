@@ -6,7 +6,7 @@ $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
-    'defaultRoute' => 'auth/reg',
+    'defaultRoute' => 'auth/login',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -14,7 +14,8 @@ $config = [
             'baseUrl' => '',
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'yii\rbac\PhpManager',
+            'defaultRoles' => ['admin', 'USER'],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -52,9 +53,10 @@ $config = [
         
     ],
     'modules' => [
-        'admin' => [
-            'class' => 'app\modules\admin\Module',
+        'tournament' => [
+            'class' => 'app\modules\tournament\Module',
         ],
+
     ],
     'params' => $params,
 ];

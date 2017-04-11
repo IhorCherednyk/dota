@@ -36,12 +36,6 @@ AppAsset::register($this);
                         ],
                         'encodeLabels' => false,
                         'items' => [
-                            [
-                                'label' => Yii::t('app', 'User'),
-                                'url' => ['/admin/user/index'],
-                                
-                            ],
-                            
                                 [
                                 'label' => Yii::t('app', 'Home'),
                                 'url' => ['/dota/tournament','username' => (isset(\Yii::$app->user->identity->username))? \Yii::$app->user->identity->username :null],

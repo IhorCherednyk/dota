@@ -25,7 +25,7 @@ $config = [
             'useFileTransport' => true,
         ],
         'authManager' => [
-            'class' => 'yii\rbac\DbManager',
+            'class' => 'yii\rbac\PhpManager',
         ],
         'urlManager' => [
             'class' => 'yii\web\UrlManager',

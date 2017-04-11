@@ -18,13 +18,35 @@ use app\models\ResetPasswordForm;
 use app\models\Email;
 use Yii;
 use yii\web\UploadedFile;
+use yii\filters\AccessControl;
 
 /**
  * Description of AuthoriseController
  *
  * @author Anastasiya
  */
-class AuthController extends AppController {
+class AuthController extends BaseController {
+    public $layout = '/main';
+    
+    public function behaviors() {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                        [
+                        'actions' => ['logout'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                        [
+                        'actions' => ['login','reg','activate-email','send-email','setnew-password'],
+                        'allow' => true,
+                        'roles' => ['?'],
+                    ],
+                ],
+            ],
+        ];
+    }
 
     public function actionReg() {
 
@@ -107,8 +129,8 @@ class AuthController extends AppController {
         if ($model->load(Yii::$app->request->post())) {
 
             if ($model->login()) {
-                if ($model->user->role == User::IS_ADMIN) {
-                    return $this->redirect(['/admin']);
+                if ($model->user->role == User::ROLE_ADMIN) {
+                    return $this->redirect(['/admin-tournament/index']);
                 } else {
                     return $this->redirect(['dota/tournament']);
                 }
