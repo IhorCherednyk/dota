@@ -9,7 +9,6 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 use yii\widgets\Menu;
 
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
@@ -24,24 +23,59 @@ AppAsset::register($this);
     </head>
     <body>
         <?php $this->beginBody() ?>
+        <style>
+            .dropdown:hover .dropdown-menu{display: block;}
+        </style>
         <div class="wrap">
 
             <nav class=" navbar-inverse navbar-right navbar-fixed-top navbar">
                 <div class="container">
-                    
+
                     <?=
                     Menu::widget([
+                        'activateParents' => true,
+                        'encodeLabels' => false,
+                        'submenuTemplate' => "\n<ul class=\"dropdown-menu\">\n{items}\n</ul>\n",
                         'options' => [
-                            'class' => 'navbar-nav navbar-right nav',
+                            'class' => 'navbar-nav navbar-right nav nav-pills',
                         ],
                         'encodeLabels' => false,
                         'items' => [
                                 [
+                                'label' => Yii::t('app', 'Admin'),
+                                'visible' => (!\Yii::$app->user->isGuest && \Yii::$app->user->identity->role == \app\models\User::ROLE_ADMIN),
+                                'url' => ['#'],
+                                'options' => [
+                                    'class' => 'dropdown',
+                                ],
+                                'items' => [
+                                        [
+                                        'label' => Yii::t('app', 'Tournament'),
+                                        'url' => ['/admin-tournament/index'],
+                                    ],
+                                        [
+                                        'label' => Yii::t('app', 'Match'),
+                                        'url' => ['/admin-match/index'],
+                                    ],
+                                        [
+                                        'label' => Yii::t('app', 'Hero'),
+                                        'url' => ['/admin-hero/index'],
+                                    ],
+                                    [
+                                        'label' => Yii::t('app', 'Player'),
+                                        'url' => ['/admin-player/index'],
+                                    ],
+                                    [
+                                        'label' => Yii::t('app', 'Team'),
+                                        'url' => ['/admin-team/index'],
+                                    ]
+                                ]
+                            ],
+                                [
                                 'label' => Yii::t('app', 'Home'),
-                                'url' => ['/dota/tournament','username' => (isset(\Yii::$app->user->identity->username))? \Yii::$app->user->identity->username :null],
+                                'url' => ['/dota/tournament'],
                                 'visible' => !\Yii::$app->user->isGuest
                             ],
-                           
                                 [
                                 'label' => Yii::t('app', 'Register'),
                                 'url' => ['/auth/reg'],
@@ -57,7 +91,6 @@ AppAsset::register($this);
                                 'url' => ['/auth/logout'],
                                 'visible' => !\Yii::$app->user->isGuest
                             ],
-                            
                         ],
                     ]);
                     ?>

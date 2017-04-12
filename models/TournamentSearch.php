@@ -18,7 +18,7 @@ class TournamentSearch extends Tournament
     public function rules()
     {
         return [
-            [['id', 'match_id'], 'integer'],
+            [['id'], 'integer'],
             [['name'], 'safe'],
         ];
     }
@@ -60,7 +60,6 @@ class TournamentSearch extends Tournament
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'match_id' => $this->match_id,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);

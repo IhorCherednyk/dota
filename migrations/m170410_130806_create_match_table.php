@@ -8,7 +8,7 @@ use yii\db\Migration;
  *
  * - `team`
  */
-class m170410_130622_create_match_table extends Migration
+class m170410_130806_create_match_table extends Migration
 {
     /**
      * @inheritdoc
@@ -18,7 +18,8 @@ class m170410_130622_create_match_table extends Migration
         $this->createTable('match', [
             'id' => $this->primaryKey(),
             'start_date' => $this->integer()->notNull(),
-            'winer_match_team_id' => $this->integer()->notNull(),
+            'winer_match_team_id' => $this->integer(),
+            'tournament_id' => $this->integer()->notNull()
         ]);
 
         // creates index for column `winer_match_team_id`
@@ -35,6 +36,23 @@ class m170410_130622_create_match_table extends Migration
             'winer_match_team_id',
             'team',
             'id',
+            'CASCADE'
+        );
+        
+        // creates index for column `match_id`
+        $this->createIndex(
+            'idx-tournament-match_id',
+            'match',
+            'tournament_id'
+        );
+
+        // add foreign key for table `match`
+        $this->addForeignKey(
+            'fk-tournament-match_id',
+            'match',
+            'tournament_id', 
+            'tournament',
+            'id', 
             'CASCADE'
         );
     }

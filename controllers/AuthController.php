@@ -28,28 +28,28 @@ use yii\filters\AccessControl;
 class AuthController extends BaseController {
     public $layout = '/main';
     
-    public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                        [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                        [
-                        'actions' => ['login','reg','activate-email','send-email','setnew-password'],
-                        'allow' => true,
-                        'roles' => ['?'],
-                    ],
-                ],
-            ],
-        ];
-    }
+//    public function behaviors() {
+//        return [
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'rules' => [
+//                        [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                        [
+//                        'actions' => ['login','reg','activate-email','send-email','setnew-password'],
+//                        'allow' => true,
+//                        'roles' => ['?'],
+//                    ],
+//                ],
+//            ],
+//        ];
+//    }
 
     public function actionReg() {
-
+        $this->checkUser();
         $model = new RegForm();
        
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -124,6 +124,8 @@ class AuthController extends BaseController {
     }
 
     public function actionLogin() {
+       
+        $this->checkUser();
         $model = new LoginForm();
 
         if ($model->load(Yii::$app->request->post())) {
@@ -148,7 +150,17 @@ class AuthController extends BaseController {
         Yii::$app->user->logout();
         return $this->redirect(['auth/login']);
     }
-
+    
+    protected function checkUser(){
+        if (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == User::ROLE_USER) {
+            D(Yii::$app->user->identity->role);
+            return $this->redirect(['dota/tournament']);
+        } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == User::ROLE_ADMIN) {
+            
+            return $this->redirect(['/admin-tournament/index']);
+        }
+        return false;
+    }
 
 
 }

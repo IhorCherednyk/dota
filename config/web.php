@@ -47,7 +47,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'auth' => 'auth/login',
-                'admin' => 'admin/user/index',
+                'admin' => 'admin-tournament/index',
             ],
         ],
         
