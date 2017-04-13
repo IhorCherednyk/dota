@@ -132,7 +132,7 @@ class AuthController extends BaseController {
 
             if ($model->login()) {
                 if ($model->user->role == User::ROLE_ADMIN) {
-                    return $this->redirect(['/admin-tournament/index']);
+                    return $this->redirect(['/admin-team/index']);
                 } else {
                     return $this->redirect(['dota/tournament']);
                 }
