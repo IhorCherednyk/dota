@@ -77,8 +77,8 @@ class Team extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getPlayerHasTeams()
+    public function getPlayers()
     {
-        return $this->hasMany(PlayerHasTeam::className(), ['team_id' => 'id']);
+        return $this->hasMany(Player::className(), ['team_id' => 'id']);
     }
 }

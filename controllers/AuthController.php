@@ -157,7 +157,7 @@ class AuthController extends BaseController {
             return $this->redirect(['dota/tournament']);
         } elseif (!Yii::$app->user->isGuest && Yii::$app->user->identity->role == User::ROLE_ADMIN) {
             
-            return $this->redirect(['/admin-tournament/index']);
+            return $this->redirect(['/admin-player/index']);
         }
         return false;
     }

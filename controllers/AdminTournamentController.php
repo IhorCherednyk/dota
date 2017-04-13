@@ -3,16 +3,16 @@
 namespace app\controllers;
 
 use Yii;
-use app\models\Team;
-use app\models\TeamSearch;
-use yii\web\Controller;
+use app\models\Tournament;
+use app\models\TournamentSearch;
+use app\controllers\BackController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * AdminTeamController implements the CRUD actions for Team model.
+ * AdminTournamentController implements the CRUD actions for Tournament model.
  */
-class AdminTeamController extends BackController
+class AdminTournamentController extends BackController
 {
     /**
      * @inheritdoc
@@ -30,12 +30,12 @@ class AdminTeamController extends BackController
     }
 
     /**
-     * Lists all Team models.
+     * Lists all Tournament models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new TeamSearch();
+        $searchModel = new TournamentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -45,27 +45,26 @@ class AdminTeamController extends BackController
     }
 
     /**
-     * Displays a single Team model.
+     * Displays a single Tournament model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {
-        $model = $this->findModel($id);
-        $players = $model->players;
         return $this->render('view', [
-            'model' => $model,'players' =>$players
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Team model.
+     * Creates a new Tournament model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreates()
+    public function actionCreate()
     {
-        $model = new Team();
+        $model = new Tournament();
+           
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -76,13 +75,14 @@ class AdminTeamController extends BackController
     }
 
     /**
-     * Updates an existing Team model.
+     * Updates an existing Tournament model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
+        D($_POST);
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -95,7 +95,7 @@ class AdminTeamController extends BackController
     }
 
     /**
-     * Deletes an existing Team model.
+     * Deletes an existing Tournament model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -108,15 +108,15 @@ class AdminTeamController extends BackController
     }
 
     /**
-     * Finds the Team model based on its primary key value.
+     * Finds the Tournament model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Team the loaded model
+     * @return Tournament the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Team::findOne($id)) !== null) {
+        if (($model = Tournament::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
