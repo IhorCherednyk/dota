@@ -8,17 +8,18 @@ use app\models\TournamentSearch;
 use app\controllers\BackController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\models\Match;
+use yii\base\Model;
 
 /**
  * AdminTournamentController implements the CRUD actions for Tournament model.
  */
-class AdminTournamentController extends BackController
-{
+class AdminTournamentController extends BackController {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -33,14 +34,13 @@ class AdminTournamentController extends BackController
      * Lists all Tournament models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new TournamentSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -49,10 +49,9 @@ class AdminTournamentController extends BackController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -61,18 +60,50 @@ class AdminTournamentController extends BackController
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Tournament();
-           
+        $count = count(Yii::$app->request->post('Match', []));
+        D($count);
+        $matches = [new Match()];
+        for ($i = 1; $i < 3; $i++) {
+            $matches[] = new Match();
+        }
+//        D($_POST);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
-                'model' => $model,
+                        'model' => $model,
+                        'matches' => $matches
             ]);
         }
     }
+
+//    public function actionCreate()
+//    {
+//            $model = new Tournament();
+//            //Find out how many products have been submitted by the form
+//            $count = count(Yii::$app->request->post('Match', []));
+//
+//            //Send at least one model to the form
+//            $matches = [new Match()];
+//
+//            //Create an array of the products submitted
+//            for ($i = 1; $i < $count; $i++) {
+//                $matches[] = new Match();
+//            }
+//            //Load and validate the multiple models
+//            if (Model::loadMultiple($matches, Yii::$app->request->post()) && Model::validateMultiple($matches)) {
+//
+//                foreach ($matches as $match) {
+//                    //Try to save the models. Validation is not needed as it's already been done.
+//                    $match->save(false);
+//                }
+//                return $this->redirect('view');
+//            }
+//
+//            return $this->render('create', ['matches' => $matches, 'model' => $model]);
+//    }
 
     /**
      * Updates an existing Tournament model.
@@ -80,8 +111,7 @@ class AdminTournamentController extends BackController
      * @param integer $id
      * @return mixed
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         D($_POST);
         $model = $this->findModel($id);
 
@@ -89,7 +119,7 @@ class AdminTournamentController extends BackController
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
@@ -100,8 +130,7 @@ class AdminTournamentController extends BackController
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -114,12 +143,12 @@ class AdminTournamentController extends BackController
      * @return Tournament the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Tournament::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
 }

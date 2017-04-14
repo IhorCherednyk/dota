@@ -8,7 +8,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="tournament-form">
+<!--<div class="tournament-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -26,6 +26,25 @@ use yii\widgets\ActiveForm;
         <?= Html::textInput('Tournament[1][game][1][redTeam]', '', ['class' => 'form-control jsUrlField']) ?>
         <?= Html::textInput('Tournament[1][game][1][blueTeam]', '', ['class' => 'form-control jsUrlField']) ?>
     </div>
+    <div class="form-group">
+        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+    </div>
+
+    <?php ActiveForm::end(); ?>
+
+</div>-->
+
+<div class="tournament-form">
+
+    <?php $form = ActiveForm::begin(); ?>
+
+    <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+    <div class="col-md-5">
+        <?php foreach ($matches as $key => $match) {
+            echo $form->field($match, '['.$key.']tournament_id')->textInput(['maxlength' => true]);
+        } ?>
+    </div>
+
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
