@@ -19,9 +19,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'start_date') ?>
 
-    <?= $form->field($model, 'winer_match_team_id') ?>
-
     <?= $form->field($model, 'tournament_id') ?>
+
+    <?= $form->field($model, 'team_1') ?>
+
+    <?= $form->field($model, 'team_2') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

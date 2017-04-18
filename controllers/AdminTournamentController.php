@@ -2,14 +2,13 @@
 
 namespace app\controllers;
 
-use Yii;
-use app\models\Tournament;
-use app\models\TournamentSearch;
 use app\controllers\BackController;
-use yii\web\NotFoundHttpException;
+use app\models\Tournament;
+use app\models\TournamentForm;
+use app\models\TournamentSearch;
+use Yii;
 use yii\filters\VerbFilter;
-use app\models\Match;
-use yii\base\Model;
+use yii\web\NotFoundHttpException;
 
 /**
  * AdminTournamentController implements the CRUD actions for Tournament model.
@@ -61,20 +60,15 @@ class AdminTournamentController extends BackController {
      * @return mixed
      */
     public function actionCreate() {
-        $model = new Tournament();
-        $count = count(Yii::$app->request->post('Match', []));
-        D($count);
-        $matches = [new Match()];
-        for ($i = 1; $i < 3; $i++) {
-            $matches[] = new Match();
-        }
-//        D($_POST);
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model = new TournamentForm();
+//                if($_POST){
+//            D($_POST);
+//        }
+        if ($model->load(Yii::$app->request->post()) && $model->save(Yii::$app->request->post())) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                         'model' => $model,
-                        'matches' => $matches
             ]);
         }
     }
@@ -106,16 +100,17 @@ class AdminTournamentController extends BackController {
 //    }
 
     /**
-     * Updates an existing Tournament model.
+     * Updates an existing Tournament model.s
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      */
     public function actionUpdate($id) {
-        D($_POST);
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model = new TournamentForm(Tournament::findOne($id));
+//        if($_POST){
+//            D($_POST);
+//        }
+        if ($model->load(Yii::$app->request->post()) && $model->save(Yii::$app->request->post(),$id)) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [

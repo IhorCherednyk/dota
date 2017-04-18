@@ -18,27 +18,29 @@ class m170410_130806_create_match_table extends Migration
         $this->createTable('match', [
             'id' => $this->primaryKey(),
             'start_date' => $this->integer()->notNull(),
-            'winer_match_team_id' => $this->integer(),
-            'tournament_id' => $this->integer()->notNull()
+            'tournament_id' => $this->integer()->notNull(),
+            'team_1' => $this->integer()->notNull(),
+            'team_2' => $this->integer()->notNull(),
         ]);
-
-        // creates index for column `winer_match_team_id`
+        // creates index for column `match_id`
         $this->createIndex(
-            'idx-match-winer_match_team_id',
-            'match',
-            'winer_match_team_id'
+                'idx-team_1_id', 'match', 'team_1'
         );
 
-        // add foreign key for table `team`
+        // add foreign key for table `match`
         $this->addForeignKey(
-            'fk-match-winer_match_team_id',
-            'match',
-            'winer_match_team_id',
-            'team',
-            'id',
-            'CASCADE'
+                'fk-team_1_id', 'match', 'team_1', 'team', 'id', 'CASCADE'
         );
-        
+        // creates index for column `match_id`
+        $this->createIndex(
+                'idx-team_2_id', 'match', 'team_2'
+        );
+
+        // add foreign key for table `match`
+        $this->addForeignKey(
+                'fk-team_2_id', 'match', 'team_2', 'team', 'id', 'CASCADE'
+        );
+
         // creates index for column `match_id`
         $this->createIndex(
             'idx-tournament-match_id',
@@ -64,14 +66,32 @@ class m170410_130806_create_match_table extends Migration
     {
         // drops foreign key for table `team`
         $this->dropForeignKey(
-            'fk-match-winer_match_team_id',
+            'fk-tournament-match_id',
             'match'
         );
 
         // drops index for column `winer_match_team_id`
         $this->dropIndex(
-            'idx-match-winer_match_team_id',
+            'idx-tournament-match_id',
             'match'
+        );
+        $this->dropForeignKey(
+            'fk-team_1_id',
+            'match'
+        );
+
+        // drops index for column `winer_match_team_id`
+        $this->dropIndex(
+            'idx-team_1_id',
+            'match'
+        );
+         $this->dropForeignKey(
+                'fk-team_2_id', 'match'
+        );
+
+        // drops index for column `winer_match_team_id`
+        $this->dropIndex(
+                'idx-team_2_id', 'match'
         );
 
         $this->dropTable('match');

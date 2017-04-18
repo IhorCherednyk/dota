@@ -26,8 +26,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'start_date',
-            'winer_match_team_id',
             'tournament_id',
+            'team_1',
+            'team_2',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

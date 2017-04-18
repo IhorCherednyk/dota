@@ -14,9 +14,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'start_date')->textInput() ?>
 
-    <?= $form->field($model, 'winer_match_team_id')->textInput() ?>
-
     <?= $form->field($model, 'tournament_id')->textInput() ?>
+
+    <?= $form->field($model, 'team_1')->textInput() ?>
+
+    <?= $form->field($model, 'team_2')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

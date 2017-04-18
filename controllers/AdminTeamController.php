@@ -66,6 +66,23 @@ class AdminTeamController extends BackController
     public function actionCreates()
     {
         $model = new Team();
+        $model->load(Yii::$app->request->post());
+        $arr = [
+            '_csrf' => 'Nmx2NUxlclZBJBUFNSNKG1EPTlQWAAYxZRZBQxVXKx1SATVTAgsYNQ==',
+            'babka' => [
+                'names' => 'ddd',
+                'Team' => [
+                    '0' => [
+                        'name' => 'ыыыы',
+                        'avatar' => '5555'
+                        ]
+                    
+                ],
+            ]
+        ];
+        $model->load($arr['babka']['Team']['0'],'');
+//        D($model->load($arr['babka']));
+        D($model);
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {

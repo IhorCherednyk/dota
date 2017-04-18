@@ -9,11 +9,13 @@ use Yii;
  *
  * @property integer $id
  * @property integer $start_date
- * @property integer $winer_match_team_id
  * @property integer $tournament_id
+ * @property integer $team_1
+ * @property integer $team_2
  *
  * @property Games[] $games
- * @property Team $winerMatchTeam
+ * @property Team $team1
+ * @property Team $team2
  * @property Tournament $tournament
  */
 class Match extends \yii\db\ActiveRecord
@@ -32,11 +34,13 @@ class Match extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['start_date', 'tournament_id'], 'required'],
-            [['start_date', 'winer_match_team_id', 'tournament_id'], 'integer'],
-            [['winer_match_team_id'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['winer_match_team_id' => 'id']],
+            [['start_date', 'tournament_id', 'team_1', 'team_2'], 'required'],
+            [['start_date', 'tournament_id', 'team_1', 'team_2'], 'integer'],
+            [['team_1'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['team_1' => 'id']],
+            [['team_2'], 'exist', 'skipOnError' => true, 'targetClass' => Team::className(), 'targetAttribute' => ['team_2' => 'id']],
             [['tournament_id'], 'exist', 'skipOnError' => true, 'targetClass' => Tournament::className(), 'targetAttribute' => ['tournament_id' => 'id']],
         ];
+
     }
 
     /**
@@ -45,10 +49,11 @@ class Match extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'start_date' => Yii::t('app', 'Start Date'),
-            'winer_match_team_id' => Yii::t('app', 'Winer Match Team ID'),
-            'tournament_id' => Yii::t('app', 'Tournament ID'),
+            'id' => 'ID',
+            'start_date' => 'Start Date',
+            'tournament_id' => 'Tournament ID',
+            'team_1' => 'Team 1',
+            'team_2' => 'Team 2',
         ];
     }
 
@@ -63,9 +68,17 @@ class Match extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getWinerMatchTeam()
+    public function getTeam1()
     {
-        return $this->hasOne(Team::className(), ['id' => 'winer_match_team_id']);
+        return $this->hasOne(Team::className(), ['id' => 'team_1']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTeam2()
+    {
+        return $this->hasOne(Team::className(), ['id' => 'team_2']);
     }
 
     /**

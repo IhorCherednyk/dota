@@ -30,8 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'id',
             'start_date',
-            'winer_match_team_id',
             'tournament_id',
+            'team_1',
+            'team_2',
         ],
     ]) ?>
 

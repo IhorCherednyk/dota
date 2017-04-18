@@ -18,7 +18,7 @@ class MatchSearch extends Match
     public function rules()
     {
         return [
-            [['id', 'start_date', 'winer_match_team_id', 'tournament_id'], 'integer'],
+            [['id', 'start_date', 'tournament_id', 'team_1', 'team_2'], 'integer'],
         ];
     }
 
@@ -60,8 +60,9 @@ class MatchSearch extends Match
         $query->andFilterWhere([
             'id' => $this->id,
             'start_date' => $this->start_date,
-            'winer_match_team_id' => $this->winer_match_team_id,
             'tournament_id' => $this->tournament_id,
+            'team_1' => $this->team_1,
+            'team_2' => $this->team_2,
         ]);
 
         return $dataProvider;
