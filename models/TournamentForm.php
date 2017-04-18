@@ -23,6 +23,7 @@ class TournamentForm extends Model {
         if(!is_null($model)){
             $this->model = $model;
             $this->Match = Match::findAll(['tournament_id' => $model->id]);
+           
             $this->setAttributes($this->model->getAttributes(), '');
         }else {
             $this->Match = [new Match()];
@@ -36,10 +37,12 @@ class TournamentForm extends Model {
     }
 
     public function save($data,$id = null) {
-        if(!is_null($id)){
             $this->model->name = $data['TournamentForm']['name'];
+       
             if($this->model->save()){
+                $this->setAttributes($this->model->getAttributes(), '');
                 $delMatch = Match::deleteAll(['tournament_id' => $this->model->id]);
+                
                 $matchcount = count($data['TournamentForm']['Match']);
                 for ($i = 0; $i < $matchcount; $i++) {
                     $matches[] = new Match();
@@ -53,10 +56,9 @@ class TournamentForm extends Model {
                     foreach ($matches as $match) {
                         $match->save(false);
                     }
-                    
+                    return true;
                 }
             }
-        }
 
     }
 
