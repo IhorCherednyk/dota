@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use yii\web\View;
 use app\models\Team;
 use yii\helpers\ArrayHelper;
+use app\models\Player;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Tournament */
@@ -43,7 +44,16 @@ $params = [
 
         <h2>Matches</h2>
         <div class="match-form">
+            <?php // D($model);?>
             <?php foreach ($model->Match as $key => $match): ?>
+                <?php
+                $arrmatch = Team::find()->where(['id' => $model->Match[$key]['team_1']])->orWhere(['id' => $model->Match[$key]['team_2']])->all();
+                $itemsmatch = ArrayHelper::map($arrmatch, 'id', 'name');
+                $itemsmatchparams = [
+                    'prompt' => 'Select Winner Team'
+                ];
+
+                ?>
                 <?php ?>
                 <div class="row match">
                     <div class="col-md-4">
@@ -56,24 +66,44 @@ $params = [
                         <?= $form->field($model, 'Match[' . $key . '][start_date]')->textInput()->label('Date'); ?>
                     </div>
                     <div class="col-md-1">
-                        <?php
-                        if ($key >= 1): ?>
-                         <button class="jsRemoveMatch">X</button>
-                         <?php endif; ?>
+                        <?php if ($key >= 1): ?>
+                            <button class="jsRemoveMatch">X</button>
+                        <?php endif; ?>
+                    </div>
+                    <div class="col-md-8">
+
+                        <div class="row games">
+                            <?php foreach ($match['games'] as $gamekey => $game): ?>
+                                <h3>Games: <?= $gamekey + 1 ?></h3>
+                                <div class="col-md-12">
+                                    <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][winer_team_id]')->dropDownList($itemsmatch, $itemsmatchparams)->label('Winner Team'); ?>
+                                </div>
+                                <h3>Game INFO</h3>
+                                <?php foreach ($game['gameInfos'] as $infokey => $info): ?>
+                                    <div class="col-md-6">
+                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][player_id]')->textInput()->label('Player Id'); ?>
+                                    </div> 
+                                    <div class="col-md-6">
+                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][hero_id]')->textInput()->label('Hero Id'); ?>
+                                    </div> 
+                                <?php endforeach; ?>
+
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
-                <?php endforeach; ?>
+            <?php endforeach; ?>
             <p>
-<?= Html::button('Add one more match', ['class' => 'btn btn-sm red jsAddOneMoreUrl']); ?>
+                <?= Html::button('Add one more match', ['class' => 'btn btn-sm red jsAddOneMoreUrl']); ?>
             </p>
         </div> 
     </div>
 
     <div class="form-group">
-<?= Html::submitButton($model->isNewRecord() ? 'Create' : 'Update', ['class' => $model->isNewRecord() ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord() ? 'Create' : 'Update', ['class' => $model->isNewRecord() ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>
 

@@ -23,6 +23,11 @@ class TournamentForm extends Model {
         if(!is_null($model)){
             $this->model = $model;
             $this->Match = Match::findAll(['tournament_id' => $model->id]);
+            foreach($this->Match as $key => $value){
+                 foreach($this->Match[$key]->games as $keys => $value){
+                     $this->Match[$key]->games[$keys]->gameInfos;
+                 };
+            }
            
             $this->setAttributes($this->model->getAttributes(), '');
         }else {

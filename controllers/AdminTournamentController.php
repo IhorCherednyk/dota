@@ -107,7 +107,9 @@ class AdminTournamentController extends BackController {
      */
     public function actionUpdate($id) {
         $model = new TournamentForm(Tournament::findOne($id));
-
+//                        if($_POST){
+//            D($_POST);
+//        }
         if ($model->load(Yii::$app->request->post()) && $model->save(Yii::$app->request->post(),$id)) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
