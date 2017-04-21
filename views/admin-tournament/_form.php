@@ -6,6 +6,7 @@ use yii\web\View;
 use app\models\Team;
 use yii\helpers\ArrayHelper;
 use app\models\Player;
+use app\models\Hero;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Tournament */
@@ -35,6 +36,11 @@ $params = [
                     ],
                 ],
     ]);
+    $arrhero = Hero::find()->all();
+    $itemhero = ArrayHelper::map($arrhero, 'id', 'name');
+    $itemshero = [
+        'prompt' => 'Select Hero'
+    ];
     ?>
 
     <?php ?>
@@ -52,7 +58,11 @@ $params = [
                 $itemsmatchparams = [
                     'prompt' => 'Select Winner Team'
                 ];
-
+                $arrplayer = Player::find()->where(['team_id' => $model->Match[$key]['team_1']])->orWhere(['team_id' => $model->Match[$key]['team_2']])->all();
+                $itemsplayer = ArrayHelper::map($arrplayer, 'id', 'name');
+                $itemsplayerparams = [
+                    'prompt' => 'Select Player'
+                ];
                 ?>
                 <?php ?>
                 <div class="row match">
@@ -81,10 +91,10 @@ $params = [
                                 <h3>Game INFO</h3>
                                 <?php foreach ($game['gameInfos'] as $infokey => $info): ?>
                                     <div class="col-md-6">
-                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][player_id]')->textInput()->label('Player Id'); ?>
+                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][player_id]')->dropDownList($itemsplayer, $itemsplayerparams)->label('Player Name'); ?>
                                     </div> 
                                     <div class="col-md-6">
-                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][hero_id]')->textInput()->label('Hero Id'); ?>
+                                        <?= $form->field($model, 'Match[' . $key . '][games][' . $gamekey . '][gameInfos][' . $infokey . '][hero_id]')->dropDownList($itemhero, $itemshero)->label('Hero Name'); ?>
                                     </div> 
                                 <?php endforeach; ?>
 
